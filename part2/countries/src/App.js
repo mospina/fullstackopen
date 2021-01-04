@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Countries from './Countries';
+import Filter from './Filter';
+import countriesServices from "./services/countries";
 
-function App() {
+const App = () => {
+  const [countries, setCountries] = useState([]);
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    countriesServices.getAll().then((data) => setCountries(data));
+  }, []);
+
+  const onFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Filter value={filter} handler={onFilterChange} />
+        
+      <Countries 
+        countries={countries.filter(
+          (country) => country.name.toLowerCase().search(filter) >= 0
+        )}
+      />
     </div>
   );
 }
