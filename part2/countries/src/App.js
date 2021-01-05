@@ -15,14 +15,19 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+  const onSelectCountry = (name) => {
+    setFilter(name)
+  }
+
   return (
     <div>
       <Filter value={filter} handler={onFilterChange} />
         
       <Countries 
         countries={countries.filter(
-          (country) => country.name.toLowerCase().search(filter) >= 0
+          (country) => country.name.toLowerCase().search(filter.toLowerCase()) >= 0
         )}
+        onSelectCountry={onSelectCountry}
       />
     </div>
   );
