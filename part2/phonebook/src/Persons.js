@@ -8,8 +8,8 @@ const Person = ({ person }) => (
 
 const Persons = ({ persons }) => (
   <div>
-    {persons.map((person, i) => (
-      <Person key={i} person={person} />
+    {persons.map((person) => (
+      <Person key={person.id} person={person} />
     ))}
   </div>
 );
