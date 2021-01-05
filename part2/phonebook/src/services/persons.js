@@ -8,6 +8,9 @@ const getAll = () =>
     .then((response) => response.data)
     .catch((error) => console.log(error));
 
+const create = (person) => axios.post(baseUrl, person).then((response) => response.data).catch((error) => console.log(error));
+
 export default {
   getAll,
+  create
 };

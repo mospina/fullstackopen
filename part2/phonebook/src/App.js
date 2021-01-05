@@ -19,9 +19,12 @@ const App = () => {
     if (persons.map((p) => p.name).includes(newName)) {
       alert(`${newName} is already added to the phonebook`);
     } else {
-      setPersons([...persons, { name: newName, number: newNumber }]);
+      personServices.create({ name: newName, number: newNumber })
+      .then((data) => {
+        setPersons([...persons, data])
       setNewName("");
       setNewNumber("");
+      })
     }
   };
 
