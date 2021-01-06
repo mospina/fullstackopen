@@ -40,6 +40,21 @@ const App = () => {
     setNewFilter(event.target.value);
   };
 
+  const handleDeletePerson = (person) => {
+    const result = window.confirm(`Delete ${person.name}?`)
+
+    if (!result) {
+      return
+    }
+
+    personServices.remove(person.id).then((status) => {
+      if (status === 200) {
+        const newPersons = persons.filter((p) => p.id !== person.id)
+        setPersons(newPersons)
+      }
+    })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -59,6 +74,7 @@ const App = () => {
         persons={persons.filter(
           (person) => person.name.toLowerCase().search(newFilter) >= 0
         )}
+        handleDeletePerson={handleDeletePerson}
       />
     </div>
   );
