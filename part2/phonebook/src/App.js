@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
+import Notification from "./Notification";
 import personServices from "./services/persons";
 
 const App = () => {
@@ -9,10 +10,18 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personServices.getAll().then((data) => setPersons(data));
   }, []);
+
+  const flashMessage = (messageObject) => {
+    setMessage(messageObject);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
 
   const updatePerson = () => {
     const target = persons.find((person) => person.name === newName);
@@ -26,13 +35,23 @@ const App = () => {
       return;
     }
 
-    personServices.update(target.id, changes).then((data) => {
-      setPersons(
-        persons.map((person) => (person.id !== target.id ? person : data))
-      );
-      setNewName("");
-      setNewNumber("");
-    });
+    personServices
+      .update(target.id, changes)
+      .then((data) => {
+        setPersons(
+          persons.map((person) => (person.id !== target.id ? person : data))
+        );
+        setNewName("");
+        setNewNumber("");
+        flashMessage({ message: `Updated ${data.name}`, level: "info" });
+      })
+      .catch((error) => {
+        flashMessage({
+          message: `${target.name} has already been removed from server`,
+          level: "error",
+        });
+        setPersons(persons.filter((person) => person.id !== target.id));
+      });
   };
 
   const onSubmit = (event) => {
@@ -46,7 +65,8 @@ const App = () => {
           setPersons([...persons, data]);
           setNewName("");
           setNewNumber("");
-        });
+          flashMessage({ message: `Added ${data.name}`, level: "info" });
+        })
     }
   };
 
@@ -73,6 +93,7 @@ const App = () => {
       if (status === 200) {
         const newPersons = persons.filter((p) => p.id !== person.id);
         setPersons(newPersons);
+        flashMessage({ message: `Deleted ${person.name}`, level: "info" });
       }
     });
   };
@@ -80,6 +101,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
+
       <Filter value={newFilter} handler={onFilterChange} />
 
       <h2>Add a new</h2>
