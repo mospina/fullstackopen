@@ -8,12 +8,27 @@ const getAll = () =>
     .then((response) => response.data)
     .catch((error) => console.log(error));
 
-const create = (person) => axios.post(baseUrl, person).then((response) => response.data).catch((error) => console.log(error));
+const create = (person) =>
+  axios
+    .post(baseUrl, person)
+    .then((response) => response.data)
+    .catch((error) => console.log(error));
 
-const remove = (id) => axios.delete(`${baseUrl}/${id}`).then((response) => response.status).catch((error) => console.log(error))
+const remove = (id) =>
+  axios
+    .delete(`${baseUrl}/${id}`)
+    .then((response) => response.status)
+    .catch((error) => console.log(error));
+
+const update = (id, changes) =>
+  axios
+    .put(`${baseUrl}/${id}`, changes)
+    .then((response) => response.data)
+    .catch((error) => console.log(error));
 
 export default {
   getAll,
   create,
-  remove
+  remove,
+  update
 };
