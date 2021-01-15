@@ -90,7 +90,7 @@ const App = () => {
     }
 
     personServices.remove(person.id).then((status) => {
-      if (status === 200) {
+      if (status === 204) {
         const newPersons = persons.filter((p) => p.id !== person.id);
         setPersons(newPersons);
         flashMessage({ message: `Deleted ${person.name}`, level: "info" });
