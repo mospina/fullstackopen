@@ -31,6 +31,9 @@ const reducer = (state = initialState, action) => {
         ...filteredState,
         { ...updatedAnecdote, votes: updatedAnecdote.votes + 1 },
       ];
+    case "NEW":
+      return [...state, asObject(action.anecdote)];
+
     default:
       return state;
   }

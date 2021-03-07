@@ -5,11 +5,24 @@ const App = () => {
   const anecdotes = useSelector((state) => state);
   const dispatch = useDispatch();
 
+  console.log("anecdotes now: ", anecdotes);
+
   const vote = (id) => {
     console.log("vote", id);
     dispatch({
       type: "VOTE",
       anecdoteId: id,
+    });
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const anecdote = event.target.anecdote.value;
+    event.target.anecdote.value = "";
+    console.log("new", anecdote);
+    dispatch({
+      type: "NEW",
+      anecdote,
     });
   };
 
@@ -26,11 +39,11 @@ const App = () => {
         </div>
       ))}
       <h2>create new</h2>
-      <form>
+      <form onSubmit={onSubmit}>
         <div>
-          <input />
+          <input name="anecdote" id="newAnecdote" type="text" />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );
