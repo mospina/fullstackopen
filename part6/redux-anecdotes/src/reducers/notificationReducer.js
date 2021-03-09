@@ -10,12 +10,19 @@ const reducer = (state = null, action) => {
 };
 
 /* ACTIONS */
-export const setNotification = (notification) => ({
-  type: "SET_NOTIFICATION",
-  notification,
-});
+export const setNotification = (notification, timer) => {
+  return (dispatch) => {
+    dispatch({
+      type: "SET_NOTIFICATION",
+      notification,
+    });
+    setTimeout(() => {
+      dispatch(removeNotification());
+    }, timer * 1000);
+  };
+};
 
-export const removeNotification = () => ({
+const removeNotification = () => ({
   type: "REMOVE_NOTIFICATION",
 });
 
