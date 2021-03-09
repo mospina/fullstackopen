@@ -8,12 +8,8 @@ const reducer = (state = [], action) => {
     case "INIT_ANECDOTES":
       return action.data;
     case "VOTE":
-      const updatedAnecdote = state.find((a) => a.id === action.anecdoteId);
-      const filteredState = state.filter((a) => a.id !== action.anecdoteId);
-      return [
-        ...filteredState,
-        { ...updatedAnecdote, votes: updatedAnecdote.votes + 1 },
-      ];
+      const filteredState = state.filter((a) => a.id !== action.data.id);
+      return [...filteredState, action.data];
     case "NEW":
       return [...state, action.data];
 
@@ -23,10 +19,14 @@ const reducer = (state = [], action) => {
 };
 
 /* ACTIONS */
-export const vote = (id) => {
-  return {
-    type: "VOTE",
-    anecdoteId: id,
+export const vote = (anecdote) => {
+  return async (dispatch) => {
+    const changes = { ...anecdote, votes: anecdote.votes + 1 };
+    const data = await anecdotesService.update(anecdote.id, changes);
+    dispatch({
+      type: "VOTE",
+      data,
+    });
   };
 };
 

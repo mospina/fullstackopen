@@ -11,11 +11,8 @@ const AnecdoteList = () => {
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const handleVote = (id) => {
-    const anecdote = anecdotes.find((a) => a.id === id);
-    if (!anecdote) return null;
-    console.log("vote", id);
-    dispatch(vote(id));
+  const handleVote = (anecdote) => {
+    dispatch(vote(anecdote));
     dispatch(setNotification(`you vote for: ${anecdote.content}`));
     setTimeout(() => {
       dispatch(removeNotification());
@@ -35,7 +32,7 @@ const AnecdoteList = () => {
             <div>{anecdote.content}</div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => handleVote(anecdote.id)}>vote</button>
+              <button onClick={() => handleVote(anecdote)}>vote</button>
             </div>
           </div>
         ))}
