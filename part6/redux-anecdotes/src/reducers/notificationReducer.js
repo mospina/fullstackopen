@@ -1,7 +1,7 @@
 const reducer = (state = null, action) => {
   switch (action.type) {
     case "SET_NOTIFICATION":
-      return action.notification;
+      return action.data;
     case "REMOVE_NOTIFICATION":
       return null;
     default:
@@ -10,15 +10,25 @@ const reducer = (state = null, action) => {
 };
 
 /* ACTIONS */
-export const setNotification = (notification, timer) => {
-  return (dispatch) => {
-    dispatch({
-      type: "SET_NOTIFICATION",
-      notification,
-    });
-    setTimeout(() => {
+export const setNotification = (content, timer) => {
+  return (dispatch, getState) => {
+    const { notification } = getState();
+
+    if (notification) {
+      clearTimeout(notification.id);
+    }
+
+    const id = setTimeout(() => {
       dispatch(removeNotification());
     }, timer * 1000);
+
+    dispatch({
+      type: "SET_NOTIFICATION",
+      data: {
+        content,
+        id,
+      },
+    });
   };
 };
 

@@ -12,7 +12,7 @@ const Notification = () => {
 
   if (notification === null) return null;
 
-  return <div style={style}>{notification}</div>;
+  return <div style={style}>{notification.content}</div>;
 };
 
 export default Notification;
