@@ -112,21 +112,23 @@ const CreateNew = (props) => {
     info.reset();
   };
 
+  const withFieldProps = ({ reset, ...props }) => props;
+
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name="content" {...content} />
+          <input name="content" {...withFieldProps(content)} />
         </div>
         <div>
           author
-          <input name="author" {...author} />
+          <input name="author" {...withFieldProps(author)} />
         </div>
         <div>
           url for more info
-          <input name="info" {...info} />
+          <input name="info" {...withFieldProps(info)} />
         </div>
         <button>create</button>
         <button onClick={handleReset}>reset</button>
